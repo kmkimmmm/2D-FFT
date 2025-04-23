@@ -1,7 +1,7 @@
 clear;
 clc;
 
-%% === 파라미터 설정 ===
+%parameter
 c = 3e8;                      % 빛의 속도 (m/s)
 f_c = 77e9;                   % 중심 주파수 (77GHz)
 B = 300e6;                    % 대역폭 (300MHz)
@@ -14,7 +14,7 @@ lambda=c/f_c;                 % 파장
 prf=1/T_chirp;
 Ts=1/fs;
 
-%% === 타겟 설정 ===
+%target information
 % [거리(m), 속도(mi/h)]
 targets = [
     20,  20;     % 타겟1: 20m, 20 mi/h
@@ -28,14 +28,14 @@ f_d = 2 * vel / lambda;  % 도플러 주파수
 
 % disp(vel)
 
-%% === 시간 인덱스 생성 ===
+%time index
 n = 1:N; p = 1:P;
 [n_mat, p_mat] = meshgrid(n, p);
 
 % disp(n_mat)
 % disp(p_mat)
 
-%% === 수신 신호 생성 ===
+%received signal
 rx = zeros(N, P);   % 수신 신호 초기화
 
 for k = 1:num_targets
@@ -57,7 +57,7 @@ end
 rdm = abs(fftshift(fft2(rx, N, P),1));  
 rdm = 20 * log10(rdm / max(rdm(:)));  % dB 스케일(max 값으로 나눠줌)
 
-%% === 거리 및 속도 축 생성 ===
+
 f1=(1/N)*fs;  % frequency resolution for n
 f2=(1/P)*prf; % frequency resolution for p
 
@@ -67,7 +67,7 @@ range_axis=n*range_res;
 vel_res=f2*lambda/2*2.237;   % 한칸당 velocity의 값 m/s
 vel_axis=vel_res*(-P/2:P/2-1);
 
-%% === 시각화 ===
+%plot
 figure(1);
 imagesc(range_axis, vel_axis, rdm);  
 % imagesc(rdm)
